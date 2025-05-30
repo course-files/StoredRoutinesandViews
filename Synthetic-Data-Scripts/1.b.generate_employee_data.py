@@ -49,7 +49,7 @@ for i in range(52):
         (employee_number, first_name, last_name, email, branch_code, job_title)
     )
 
-    with open('./Synthetic-Data-Scripts/1.c.DML_employee_data.sql', 'a') as f:
+    with open('1.c.DML_employee_data.sql', 'a') as f:
         f.write(cursor.statement + ';\n')
 
 conn.commit()
@@ -69,7 +69,7 @@ for employee in employees:
         "UPDATE siwaka_dishes.employee SET reportsTo = %s WHERE employeeNumber = %s",
         (manager, employee[0])
     )
-    with open('./Synthetic-Data-Scripts/1.c.DML_employee_data.sql', 'a') as f:
+    with open('1.c.DML_employee_data.sql', 'a') as f:
         f.write(cursor.statement + ';\n')
 
 conn.commit()

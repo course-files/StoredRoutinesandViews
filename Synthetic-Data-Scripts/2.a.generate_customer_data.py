@@ -75,7 +75,7 @@ for i in range(1200):
         (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, sales_rep_employee_number)
     )
 
-    with open('./Synthetic-Data-Scripts/3.b.DML_customerOrder_data.sql', 'a') as f:
+    with open('2.b.DML_customer_data_original.sql', 'a') as f:
         f.write(cursor.statement + ';\n')
 
 conn.commit()
