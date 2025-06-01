@@ -44,15 +44,15 @@ business_suffixes = ['Hotel', 'Resort', 'Lodge', 'Suites', 'Inn', 'Retreat', 'Ha
 # Database connection
 conn = mysql.connector.connect(
     host='localhost',
-    port=3307,
+    port=3306,
     user='student',
     password='5trathm0re',
     database='siwaka_dishes'
 )
 cursor = conn.cursor()
 
-# Generate 1,200 customers (synthetic data)
-for i in range(1200):
+# Generate 770 customers (synthetic data)
+for i in range(770):
     if random.choice([True, False]):
         first_name = random.choice(first_names)
         last_name = random.choice(last_names)
@@ -70,13 +70,15 @@ for i in range(1200):
     sub_county = random.choice(sub_counties)
     sales_rep_employee_number = random.randint(1, 20)
     
-    cursor.execute(
-        "INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, salesRepEmployeeNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-        (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, sales_rep_employee_number)
-    )
+    # cursor.execute(
+    #     "INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, salesRepEmployeeNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+    #     (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, sales_rep_employee_number)
+    # )
 
-    with open('2.b.DML_customer_data_original.sql', 'a') as f:
-        f.write(cursor.statement + ';\n')
+    sql_statement = """INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, salesRepEmployeeNumber) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);""" % (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, sales_rep_employee_number)
+
+    with open('2.b.DML_customer_data.sql', 'a') as f:
+        f.write(sql_statement + '\n')
 
 conn.commit()
 cursor.close()

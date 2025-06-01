@@ -27,15 +27,15 @@ job_titles = [
 # Database connection
 conn = mysql.connector.connect(
     host='localhost',
-    port=3307,
+    port=3306,
     user='student',
     password='5trathm0re',
     database='siwaka_dishes'
 )
 cursor = conn.cursor()
 
-# Generate 52 employees (synthetic data)
-for i in range(52):
+# Generate 56 employees (synthetic data)
+for i in range(56):
     employee_number = i + 1  # Assuming employee numbers start from 1
     first_name = random.choice(first_names)
     last_name = random.choice(last_names)
@@ -69,6 +69,7 @@ for employee in employees:
         "UPDATE siwaka_dishes.employee SET reportsTo = %s WHERE employeeNumber = %s",
         (manager, employee[0])
     )
+
     with open('1.c.DML_employee_data.sql', 'a') as f:
         f.write(cursor.statement + ';\n')
 

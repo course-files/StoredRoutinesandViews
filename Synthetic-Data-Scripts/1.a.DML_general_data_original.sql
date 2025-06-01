@@ -6,11 +6,11 @@
 -- 5. Product: 100 products
 
 -- More synthetic data is available in separate files for the following:
--- 1. Employee: 52 employees
--- 2. Customer: 1,200 customers
--- 3. customerOrder: 50,000 orders
--- 4. orderDetail: 199,566 order details
--- 5. payment: 180,809 payments
+-- 1. Employee: 56 employees
+-- 2. Customer: 770 customers
+-- 3. customerOrder: 5,500 orders
+-- 4. orderDetail: 11,000 order details
+-- 5. payment: 14,967 payments
 
 -- Insert branches
 LOCK TABLES `branch` WRITE;

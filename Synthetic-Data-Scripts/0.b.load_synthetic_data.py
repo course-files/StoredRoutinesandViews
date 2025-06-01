@@ -1,14 +1,19 @@
 import sys
 # pip install mysql-connector-python
+# Ensure you are using the latest version of mysql-connector-python:
+# pip install --upgrade mysql-connector-python
+
 import mysql.connector
 
 # Database connection
 conn = mysql.connector.connect(
     host='localhost',
-    port=3307,
+    port=3306,
     user='student',
     password='5trathm0re',
     database='siwaka_dishes'
+    # auth_plugin='mysql_native_password'  # Uncomment if using mysql_native_password,
+    # auth_plugin='caching_sha2_password'  # Uncomment if using caching_sha2_password,
 )
 cursor = conn.cursor()
 

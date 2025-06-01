@@ -4,6 +4,7 @@
 
 CREATE DATABASE IF NOT EXISTS `siwaka_dishes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 CREATE USER IF NOT EXISTS `student`@`%` IDENTIFIED WITH caching_sha2_password BY '5trathm0re' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+-- CREATE USER IF NOT EXISTS `student`@`%` IDENTIFIED WITH mysql_native_password BY '5trathm0re' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
 GRANT USAGE ON * . * TO `student`@`%`;
 GRANT ALL PRIVILEGES ON `siwaka_dishes`.* TO `student`@`%` WITH GRANT OPTION ;
 FLUSH PRIVILEGES;
@@ -18,6 +19,8 @@ START TRANSACTION;
 -- If you need to drop the database and delete the user later
 
 -- ALTER USER `student`@`%` IDENTIFIED WITH caching_sha2_password BY 'new_password';
+-- or
+-- ALTER USER `student`@`%` IDENTIFIED WITH mysql_native_password BY 'new_password';
 
 -- DROP DATABASE IF EXISTS `siwaka_dishes`;
 -- REVOKE ALL PRIVILEGES, GRANT OPTION FROM `student`@`%`;

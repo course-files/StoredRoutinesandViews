@@ -4,7 +4,7 @@ import random
 # Connect to the database
 conn = mysql.connector.connect(
     host='localhost',
-    port=3307,
+    port=3306,
     user='student',
     password='5trathm0re',
     database='siwaka_dishes'
@@ -12,7 +12,7 @@ conn = mysql.connector.connect(
 cursor = conn.cursor()
 
 # Retrieve existing Customer Order Numbers and Product Codes
-cursor.execute("SELECT orderNumber FROM customerOrder")
+cursor.execute("SELECT orderNumber FROM customerorder")
 customerOrder = cursor.fetchall()
 
 cursor.execute("SELECT productCode FROM product")
@@ -36,11 +36,11 @@ def generate_order_details():
             sellingPrice = cursor.fetchone()[0]
             
             # cursor.execute("""
-            #     INSERT INTO orderDetail (orderNumber, productCode, quantityOrdered, priceEach)
+            #     INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach)
             #     VALUES (%s, %s, %s, %s)
             # """, (orderNumber, productCode, quantity, sellingPrice))
 
-            sql_statement = """INSERT INTO orderDetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (%s, '%s', %s, %s);""" % (orderNumber, productCode, quantity, sellingPrice)
+            sql_statement = """INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (%s, '%s', %s, %s);""" % (orderNumber, productCode, quantity, sellingPrice)
 
             with open('4.b.DML_orderDetail_data.sql', 'a') as f:
                 f.write(sql_statement + '\n')

@@ -1,6 +1,5 @@
 {
     "recommendations": [
-        "ms-azuretools.vscode-docker",
         "redhat.vscode-yaml",
         "cweijan.vscode-database-client2"
     ]

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 # Connect to the database
 conn = mysql.connector.connect(
     host='localhost',
-    port=3307,
+    port=3306,
     user='student',
     password='5trathm0re',
     database='siwaka_dishes'
@@ -14,10 +14,10 @@ conn = mysql.connector.connect(
 cursor = conn.cursor()
 
 # Fetch existing Customer Order Numbers and Payment Methods
-cursor.execute("SELECT orderNumber, orderDate FROM customerOrder")
+cursor.execute("SELECT orderNumber, orderDate FROM customerorder")
 customerOrders = cursor.fetchall()
 
-cursor.execute("SELECT paymentMethodID FROM paymentMethod")
+cursor.execute("SELECT paymentMethodID FROM paymentmethod")
 paymentMethods = cursor.fetchall()
 
 # Function to generate random payments
@@ -28,7 +28,7 @@ def generate_payments():
         random_seconds = random.randint(0, int(delta.total_seconds()))
         return start + timedelta(seconds=random_seconds)
 
-    end_date = datetime(2025, 2, 3)
+    end_date = datetime(2025, 5, 31)
 
     for order in customerOrders:
         orderNumber, orderDate = order
@@ -36,7 +36,7 @@ def generate_payments():
         # Calculate the total amount expected for the order
         cursor.execute("""
             SELECT SUM(quantityOrdered * priceEach)
-            FROM orderDetail
+            FROM orderdetail
             WHERE orderNumber = %s
         """, (orderNumber,))
         total_amount_expected = cursor.fetchone()[0]
@@ -44,8 +44,8 @@ def generate_payments():
         if total_amount_expected is None:
             continue
         
-        # Generate 1 to 5 payments
-        num_payments = random.randint(1, 5)
+        # Generate 1 to 3 payments
+        num_payments = random.randint(1, 3)
         total_amount_paid = 0
         
         for _ in range(num_payments):
