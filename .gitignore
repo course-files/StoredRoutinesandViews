@@ -163,6 +163,8 @@ cython_debug/
 
 /RoughWork
 /.cspell
+/.idea
+/.venv
 .cspell/custom-dictionary-workspace.txt
 
 /container-volumes/mysql/var-lib-mysql
@@ -171,4 +173,3 @@ cython_debug/
 /container-volumes/postgresql/var-lib-postgresql-data
 /container-volumes/postgresql/var-log-postgresql
 .cspell/custom-dictionary-workspace.txt
-/.idea
