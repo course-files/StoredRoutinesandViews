@@ -174,3 +174,5 @@ cython_debug/
 /container-volumes/postgresql/var-log-postgresql
 .cspell/custom-dictionary-workspace.txt
 /.idea
+.idea/dataSources.xml
+.idea/StoredRoutinesandViews.iml
