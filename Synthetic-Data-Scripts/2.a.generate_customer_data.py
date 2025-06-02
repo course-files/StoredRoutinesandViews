@@ -68,14 +68,15 @@ for i in range(770):
     postal_code = f'{random.randint(100, 90600)}'
     county = random.choice(counties)
     sub_county = random.choice(sub_counties)
-    sales_rep_employee_number = random.randint(1, 20)
-    
+    status = 1 if random.random() < 0.6 else 0
+
     # cursor.execute(
-    #     "INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, salesRepEmployeeNumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-    #     (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, sales_rep_employee_number)
+    #     "INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, status) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);" % (
+    #         customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county,
+    #         status)
     # )
 
-    sql_statement = """INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, salesRepEmployeeNumber) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);""" % (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, sales_rep_employee_number)
+    sql_statement = """INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, status) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);""" % (customer_name, first_name, last_name, phone, address_line1, address_line2, postal_code, county, sub_county, status)
 
     with open('2.b.DML_customer_data.sql', 'a') as f:
         f.write(sql_statement + '\n')

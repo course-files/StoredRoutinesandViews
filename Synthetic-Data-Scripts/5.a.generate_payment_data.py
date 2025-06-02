@@ -68,7 +68,7 @@ def generate_payments():
             with open('5.b.DML_payment_data.sql', 'a') as f:
                 f.write(sql_statement + '\n')
         
-        # Ensure total amount paid is between 80% and 100% of the total amount expected
+        # Ensure total amount paid is between 90% and 100% of the total amount expected
         if total_amount_paid < total_amount_expected * decimal.Decimal('0.8'):
             additional_payment = total_amount_expected * decimal.Decimal('0.8') - decimal.Decimal(total_amount_paid)
             paymentMethodID = random.choice(paymentMethods)[0]

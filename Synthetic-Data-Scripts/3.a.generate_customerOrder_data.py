@@ -32,6 +32,13 @@ cursor.execute("SELECT orderStatusID FROM orderStatus")
 order_status_ids = [row[0] for row in cursor.fetchall()]
 # print("Order Status IDs:", order_status_ids)  # Temporary output for confirmation
 
+# Retrieve existing branchCodes and related info
+cursor.execute("""
+    SELECT branchCode FROM branch
+""")
+branch_codes = cursor.fetchall()
+# print("Branch Info:", branch_codes)  # Temporary output for confirmation
+
 start_date = datetime(2021, 1, 1)
 end_date = datetime(2025, 5, 31)
 
@@ -43,14 +50,15 @@ for _ in range(5500):
                     if random.choices([True, False], weights=[0.8, 0.2])[0] else None)
     order_status_id = order_status_ids[randint(0, len(order_status_ids) - 1)]
     customer_number = customer_numbers[randint(0, len(customer_numbers) - 1)]
-
+    branch_code = branch_codes[randint(0, len(branch_codes) - 1)][0]
+    
     # This inserts the data as it is generated
     # cursor.execute("""
     #     INSERT INTO `customerorder` (orderDate, requiredDate, dispatchDate, orderStatusID, customerNumber)
     #     VALUES (%s, %s, %s, %s, %s)
     # """, (order_date, required_date, dispatch_date, order_status_id, customer_number))
     
-    sql_statement = """INSERT INTO `customerorder` (orderDate, requiredDate, dispatchDate, orderStatusID, customerNumber) VALUES ('%s', '%s', %s, %d, %d);""" % (order_date, required_date, 'NULL' if dispatch_date is None else f"'{dispatch_date}'", order_status_id, customer_number)
+    sql_statement = """INSERT INTO `customerorder` (orderDate, requiredDate, dispatchDate, orderStatusID, customerNumber, branchCode) VALUES ('%s', '%s', %s, %d, %d, %s);""" % (order_date, required_date, 'NULL' if dispatch_date is None else f"'{dispatch_date}'", order_status_id, customer_number, branch_code)
   
     
     with open('3.b.DML_customerOrder_data.sql', 'a') as f:

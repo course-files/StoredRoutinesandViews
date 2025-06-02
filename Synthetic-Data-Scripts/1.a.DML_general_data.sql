@@ -1,16 +1,17 @@
 -- Synthetic data for:
--- 1. Branch: 20 branches
--- 2. Order Status (Lookup Table): 5 order statuses
--- 3. Payment Method (Lookup Table): 11 payment methods
--- 4. Product Categories: 11 categories
--- 5. Product: 100 products
+-- 1. branch: 20 branches
+-- 2. orderstatus: Order Status (Lookup Table): 5 order statuses
+-- 3. paymentmethod: Payment Method (Lookup Table): 11 payment methods
+-- 4. productcategory: Product Categories: 11 categories
+-- 5. product: 100 products
 
 -- More synthetic data is available in separate files for the following:
--- 1. Employee: 56 employees
--- 2. Customer: 770 customers
+-- 1. employee: 56 employees
+-- 2. customer: 770 customers
 -- 3. customerOrder: 5,500 orders
--- 4. orderDetail: 11,000 order details
--- 5. payment: 14,967 payments
+-- 4. orderDetail: 11,026 order details
+-- 5. payment: 14,809 payments
+-- 6. customerFeedback: 5,500 feedback entries
 
 -- Insert branches
 LOCK TABLES `branch` WRITE;
