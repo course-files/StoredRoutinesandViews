@@ -4,6 +4,7 @@
 
 CREATE DATABASE IF NOT EXISTS `siwaka_dishes` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
 CREATE USER IF NOT EXISTS `student`@`%` IDENTIFIED WITH caching_sha2_password BY '5trathm0re' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+-- CREATE USER IF NOT EXISTS `student`@`%` IDENTIFIED WITH mysql_native_password BY '5trathm0re' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
 GRANT USAGE ON * . * TO `student`@`%`;
 GRANT ALL PRIVILEGES ON `siwaka_dishes`.* TO `student`@`%` WITH GRANT OPTION ;
 FLUSH PRIVILEGES;
@@ -17,11 +18,13 @@ START TRANSACTION;
 -- If you need to change the password later
 -- If you need to drop the database and delete the user later
 
-ALTER USER `student`@`%` IDENTIFIED WITH caching_sha2_password BY 'new_password';
+-- ALTER USER `student`@`%` IDENTIFIED WITH caching_sha2_password BY 'new_password';
+-- or
+-- ALTER USER `student`@`%` IDENTIFIED WITH mysql_native_password BY 'new_password';
 
-DROP DATABASE IF EXISTS `siwaka_dishes`;
-REVOKE ALL PRIVILEGES, GRANT OPTION FROM `student`@`%`;
-DROP USER IF EXISTS `student`@`%`;
+-- DROP DATABASE IF EXISTS `siwaka_dishes`;
+-- REVOKE ALL PRIVILEGES, GRANT OPTION FROM `student`@`%`;
+-- DROP USER IF EXISTS `student`@`%`;
 
 */
 
@@ -31,21 +34,25 @@ DROP USER IF EXISTS `student`@`%`;
 -- 3. customer
 -- 4. orderStatus
 -- 5. customerOrder
--- 6. product
--- 7. paymentMethod
--- 8. payment
--- 9. orderDetail
+-- 6. productCategory
+-- 7. product
+-- 8. paymentMethod
+-- 9. payment
+-- 10. orderDetail
+-- 11. customerfeedback
 
 SET foreign_key_checks = 0;
-DROP TABLE IF EXISTS branch; 
-DROP TABLE IF EXISTS employee; 
+DROP TABLE IF EXISTS branch;
+DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS customer;
 DROP TABLE IF EXISTS orderStatus;
 DROP TABLE IF EXISTS customerOrder;
+DROP TABLE IF EXISTS productcategory;
 DROP TABLE IF EXISTS product;
 DROP TABLE IF EXISTS paymentMethod;
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS orderDetail;
+DROP TABLE IF EXISTS customerfeedback;
 SET foreign_key_checks = 1;
 
 -- Create branch Table
@@ -88,10 +95,7 @@ CREATE TABLE siwaka_dishes.customer (
     postalCode VARCHAR(20) NOT NULL,
     county VARCHAR(50) NOT NULL,
     subCounty VARCHAR(50) NOT NULL,
-    salesRepEmployeeNumber INT,
-    CONSTRAINT FK_1_employee_to_M_customer FOREIGN KEY (salesRepEmployeeNumber) REFERENCES siwaka_dishes.employee(employeeNumber)
-        ON DELETE SET NULL
-        ON UPDATE CASCADE
+    status TINYINT NOT NULL
 );
 
 -- Create Order Status Lookup Table
@@ -108,11 +112,14 @@ CREATE TABLE siwaka_dishes.customerOrder (
     dispatchDate DATETIME,
     orderStatusID INT NOT NULL,
     customerNumber INT NOT NULL,
+    branchCode INT NOT NULL,
     CONSTRAINT FK_1_customer_to_M_customerOrder FOREIGN KEY (customerNumber) REFERENCES siwaka_dishes.customer(customerNumber)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     CONSTRAINT FK_1_orderStatus_to_M_customerOrder FOREIGN KEY (orderStatusID) REFERENCES siwaka_dishes.orderStatus(orderStatusID)
         ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+    CONSTRAINT FK_1_branch_to_M_customerorder FOREIGN KEY (branchCode) REFERENCES siwaka_dishes.branch(branchCode)
         ON UPDATE CASCADE
 );
 
@@ -164,13 +171,27 @@ CREATE TABLE siwaka_dishes.orderDetail (
     orderNumber INT NOT NULL,
     productCode VARCHAR(20) NOT NULL,
     quantityOrdered INT NOT NULL,
-    priceEach DECIMAL(10, 2) NOT NULL, 
+    priceEach DECIMAL(10, 2) NOT NULL,
     CONSTRAINT FK_1_customerOrder_to_M_orderDetails FOREIGN KEY (orderNumber) REFERENCES siwaka_dishes.customerOrder(orderNumber)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
     CONSTRAINT FK_1_product_to_M_orderDetails FOREIGN KEY (productCode) REFERENCES siwaka_dishes.product(productCode)
         ON DELETE RESTRICT
         ON UPDATE CASCADE
+);
+
+-- Create Customer Feedback Table
+CREATE TABLE siwaka_dishes.customerfeedback (
+	customerfeedbackID INT auto_increment NOT NULL PRIMARY KEY,
+	foodquality INT NULL,
+	servicequality INT NULL,
+	pricetovalue INT NULL,
+	ambiance INT NULL,
+	orderNumber INT NULL,
+	comment TEXT NULL,
+	CONSTRAINT FK_1_customerorder_TO_M_customerfeedback FOREIGN KEY (orderNumber)
+	    REFERENCES siwaka_dishes.customerorder(orderNumber)
+	    ON UPDATE CASCADE
 );
 
 COMMIT;
