@@ -9,20 +9,8 @@ SELECT payment.paymentNumber        AS payment_paymentNumber,
        payment.amount               AS payment_amount,
        paymentMethod.paymentMethod  AS payment_paymentMethod,
        orderstatus.status           AS orderstatus_status,
-       customerorder.customerNumber AS customerNumber,
-       customer.customerName        AS customer_customerName,
-       customer.addressLine1        AS customer_addressLine1,
-       customer.addressLine2        AS customer_addressLine2,
-       customer.postalCode          AS customer_postalCode,
-       customer.county              AS customer_county,
-       customer.subCounty           AS customer_subCounty,
-       customer.status              AS customer_status,
-       branch.phone                 AS branch_phone,
-       branch.addressLine1          AS branch_addressLine1,
-       branch.addressLine2          AS branch_addressLine2,
-       branch.postalCode            AS branch_postalCode,
-       branch.county                AS branch_county,
-       branch.subCounty             AS branch_subCounty
+       customerorder.customerNumber AS customerorder_customerNumber,
+       customerorder.branchCode     AS customerorder_branchCode
 FROM payment
          INNER JOIN customerorder ON payment.orderNumber = customerorder.orderNumber
          INNER JOIN customer ON customerorder.customerNumber = customer.customerNumber
@@ -96,3 +84,30 @@ FROM customer
     customerorder.orderStatusID = orderstatus.orderStatusID
          INNER JOIN branch ON
     customerorder.branchCode = branch.branchCode;
+
+-- 3. Branch data
+SELECT branchCode   AS branch_branchCode,
+       phone        AS branch_phone,
+       addressLine1 AS branch_addressLine1,
+       addressLine2 AS branch_addressLine2,
+       postalCode   AS branch_postalCode,
+       county       AS branch_county,
+       subCounty    AS branch_subCounty
+FROM branch;
+
+-- 4. Customer data
+SELECT customerNumber   AS customer_customerNumber,
+       customerName     AS customer_customerName,
+       IF(LOCATE('[Business]', customerName) > 0, 'Business', 'Individual') AS customer_customerType,
+       contactFirstName AS customer_contactFirstName,
+       contactLastName  AS customer_contactLastName,
+       phone            AS customer_phone,
+       addressLine1     AS customer_addressLine1,
+       addressLine2     AS customer_addressLine2,
+       postalCode       AS customer_postalCode,
+       county           AS customer_county,
+       subCounty        AS customer_subCounty,
+       CONCAT(county, ", Kenya") AS customer_customerLocation,
+       status           AS customer_status,
+       IF(status = 1, 'Active', 'Dormant') AS customer_statusText
+FROM customer;
