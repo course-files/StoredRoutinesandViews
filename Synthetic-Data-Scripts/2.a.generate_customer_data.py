@@ -68,7 +68,7 @@ for i in range(770):
     postal_code = f'{random.randint(100, 90600)}'
     county = random.choice(counties)
     sub_county = random.choice(sub_counties)
-    status = 1 if random.random() < 0.6 else 0
+    status = 1 if random.random() < 0.51 else 0
 
     # cursor.execute(
     #     "INSERT INTO siwaka_dishes.customer (customerName, contactFirstName, contactLastName, phone, addressLine1, addressLine2, postalCode, county, subCounty, status) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);" % (

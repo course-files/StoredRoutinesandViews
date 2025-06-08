@@ -1,5 +1,6 @@
 import random
 import mysql.connector
+import numpy as np
 
 positive_feedback_comments = [
     "Great food and service!", "Loved the ambiance.", "Excellent value for money.",
@@ -60,33 +61,26 @@ order_status_list = cursor.fetchall()  # List of (orderNumber, status)
 # Generate feedback for each orderNumber
 for orderNumber, status in order_status_list:
     if status == 0:
-        # Mostly negative: 80% negative, 20% positive
-        if random.random() < 0.8:
+        # Dormant: mostly low, but allow some high ratings
+        if random.random() < 0.95:
+            rating = np.random.normal(loc=2, scale=1)  # mean 2, stddev 1
             comment = random.choice(negative_feedback_comments)
-            foodquality = random.randint(1, 2)
-            servicequality = random.randint(1, 2)
-            pricetovalue = random.randint(1, 2)
-            ambiance = random.randint(1, 2)
         else:
+            rating = np.random.normal(loc=4, scale=1)
             comment = random.choice(positive_feedback_comments)
-            foodquality = random.randint(2, 3)
-            servicequality = random.randint(2, 3)
-            pricetovalue = random.randint(2, 3)
-            ambiance = random.randint(2, 3)
     else:
-        # 90% positive, 10% negative
+        # Active: mostly high, but allow some low ratings
         if random.random() < 0.9:
+            rating = np.random.normal(loc=4, scale=1)
             comment = random.choice(positive_feedback_comments)
-            foodquality = random.randint(4, 5)
-            servicequality = random.randint(4, 5)
-            pricetovalue = random.randint(3, 5)
-            ambiance = random.randint(3, 5)
         else:
+            rating = np.random.normal(loc=2, scale=1)
             comment = random.choice(negative_feedback_comments)
-            foodquality = random.randint(3, 4)
-            servicequality = random.randint(3, 4)
-            pricetovalue = random.randint(2, 4)
-            ambiance = random.randint(2, 4)
+    # Clip ratings to 1-5 and round
+    foodquality = int(np.clip(round(rating), 1, 5))
+    servicequality = int(np.clip(round(rating + np.random.normal(0, 0.5)), 1, 5))
+    pricetovalue = int(np.clip(round(rating + np.random.normal(0, 0.5)), 1, 5))
+    ambiance = int(np.clip(round(rating + np.random.normal(0, 0.5)), 1, 5))
 
     sql_statement = (
         "INSERT INTO siwaka_dishes.customerfeedback "
