@@ -177,3 +177,4 @@ cython_debug/
 .idea/dataSources.xml
 .idea/StoredRoutinesandViews.iml
 .idea/dataSources.xml
+/.vscode
