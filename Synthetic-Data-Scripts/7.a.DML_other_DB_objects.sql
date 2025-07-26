@@ -111,3 +111,49 @@ SELECT customerNumber   AS customer_customerNumber,
        status           AS customer_status,
        IF(status = 1, 'Active', 'Dormant') AS customer_statusText
 FROM customer;
+
+-- 5. Third view
+-- This script creates a view named `view_revenue_per_month_per_branch` that calculates
+-- total revenue, number of orders, and average order value per month and per branch
+CREATE VIEW `view_revenue_per_month_per_branch` AS
+SELECT DATE_FORMAT(payment.paymentDate, '%Y-%m') AS Month,
+       branch.county                             AS BranchCounty,
+       SUM(payment.amount)                       AS TotalRevenue,
+       COUNT(DISTINCT customerorder.orderNumber) AS NumberOfOrders,
+       AVG(payment.amount)                       AS AvgPaymentAmount
+FROM payment
+         INNER JOIN customerorder
+                    ON payment.orderNumber = customerorder.orderNumber
+         INNER JOIN orderstatus ON customerorder.orderStatusID = orderstatus.orderStatusID
+         INNER JOIN branch ON customerorder.branchCode = branch.branchCode
+WHERE orderstatus.orderStatusID IN (2, 3, 4)
+GROUP BY Month, BranchCounty
+ORDER BY Month;
+
+-- 6. Fourth view
+CREATE VIEW `view_profit_per_product` AS
+SELECT DATE_FORMAT(payment.paymentDate, '%Y-%m-%d')      AS PaymentDate,
+       customerorder.orderNumber                         AS OrderNumber,
+       customer.customerName                             AS CustomerName,
+       branch.subCounty                                  AS BranchSubCounty,
+       branch.county                                     AS BranchCounty,
+       product.productName                               AS ProductName,
+       productcategory.categoryName                      AS CategoryName,
+       orderdetail.quantityOrdered                       AS QuantityOrdered,
+       product.costOfProduction                          AS CostOfProductionPerUnit,
+       product.sellingPrice                              AS SellingPricePerUnit,
+       (product.sellingPrice - product.costOfProduction) AS ProfitPerUnit,
+       FORMAT(
+               ((product.sellingPrice - product.costOfProduction) /
+                product.costOfProduction) * 100, 2)      AS PercentageProfitPerUnit
+FROM payment
+         INNER JOIN customerorder
+                    ON payment.orderNumber = customerorder.orderNumber
+         INNER JOIN customer ON customerorder.customerNumber = customer.customerNumber
+         INNER JOIN orderstatus ON customerorder.orderStatusID = orderstatus.orderStatusID
+         INNER JOIN orderdetail ON customerorder.orderNumber = orderdetail.orderNumber
+         INNER JOIN product ON orderdetail.productCode = product.productCode
+         INNER JOIN productcategory ON product.productCategoryID = productcategory.productCategoryID
+         INNER JOIN branch ON customerorder.branchCode = branch.branchCode
+WHERE orderstatus.orderStatusID IN (2, 3, 4)
+ORDER BY PaymentDate, OrderNumber;
