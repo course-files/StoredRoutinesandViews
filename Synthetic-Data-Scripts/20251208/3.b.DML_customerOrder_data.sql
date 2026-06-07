@@ -1,3 +1,5 @@
+USE `siwaka_dishes`;
+
 LOCK TABLES `customerorder` WRITE;
 /*!40000 ALTER TABLE `customerorder` DISABLE KEYS */;
 

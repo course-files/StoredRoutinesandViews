@@ -13,6 +13,8 @@
 -- 5. payment: 14,809 payments
 -- 6. customerFeedback: 5,500 feedback entries
 
+USE `siwaka_dishes`;
+
 -- Insert branches
 LOCK TABLES `branch` WRITE;
 /*!40000 ALTER TABLE `branch` DISABLE KEYS */;
@@ -41,14 +43,20 @@ INSERT INTO siwaka_dishes.branch (branchCode, phone, addressLine1, addressLine2,
 UNLOCK TABLES;
 
 -- Insert data into Order Status Lookup Table
+LOCK TABLES `orderStatus` WRITE;
+/*!40000 ALTER TABLE `orderStatus` DISABLE KEYS */;
 INSERT INTO siwaka_dishes.orderStatus (orderStatusID, status) VALUES 
 (1, 'Pending'),
 (2, 'Processing'),
 (3, 'In Transit'),
 (4, 'Delivered'),
 (5, 'Cancelled');
+/*!40000 ALTER TABLE `orderStatus` ENABLE KEYS */;
+UNLOCK TABLES;
 
 -- Insert Payment Methods
+LOCK TABLES `paymentMethod` WRITE;
+/*!40000 ALTER TABLE `paymentMethod` DISABLE KEYS */;
 INSERT INTO siwaka_dishes.paymentMethod (paymentMethodID, paymentMethod) VALUES 
 (1, 'Cash'),
 (2, 'Debit Card'),
@@ -61,6 +69,8 @@ INSERT INTO siwaka_dishes.paymentMethod (paymentMethodID, paymentMethod) VALUES
 (9, 'Mobile Money - Equitel'),
 (10, 'Mobile Money - MTN Mobile Money'),
 (11, 'Mobile Money - Orange Money');
+/*!40000 ALTER TABLE `paymentMethod` ENABLE KEYS */;
+UNLOCK TABLES;
 
 -- Insert product categories into the productcategory table:
 LOCK TABLES `productcategory` WRITE;

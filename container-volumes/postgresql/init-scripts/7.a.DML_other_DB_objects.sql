@@ -1,13 +1,15 @@
+SET search_path TO siwakadishes;
+
 -- First view
 -- This script creates a view named `view_payment_data` that consolidates payment information
 -- Tables involved:
 -- payment, paymentmethod, customerorder, orderstatus, customer, branch
-CREATE VIEW `view_payment_data` AS
+CREATE VIEW view_payment_data AS
 SELECT payment.paymentNumber        AS payment_paymentNumber,
        customerorder.orderNumber    AS customerorder_orderNumber,
        payment.paymentDate          AS payment_paymentDate,
        payment.amount               AS payment_amount,
-       paymentMethod.paymentMethod  AS payment_paymentMethod,
+       paymentmethod.paymentMethod  AS payment_paymentMethod,
        orderstatus.status           AS orderstatus_status,
        customerorder.customerNumber AS customerorder_customerNumber,
        customerorder.branchCode     AS customerorder_branchCode
@@ -25,7 +27,7 @@ ORDER BY payment.paymentDate;
 -- consolidates customer, order, feedback, product, and branch information
 -- Tables involved:
 -- customer, customerorder, customerfeedback, orderdetail, product, productcategory, orderstatus, branch
-CREATE VIEW `view_customerfeedback_data` AS
+CREATE VIEW view_customerfeedback_data AS
 SELECT customer.customerNumber             AS customer_customerNumber,
        customer.customerName               AS customer_customerName,
        customer.contactFirstName           AS customer_contactFirstName,

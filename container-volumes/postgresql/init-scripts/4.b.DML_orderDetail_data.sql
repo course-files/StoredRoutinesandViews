@@ -1,5 +1,4 @@
-LOCK TABLES `orderDetail` WRITE;
-/*!40000 ALTER TABLE `orderDetail` DISABLE KEYS */;
+SET search_path TO siwakadishes;
 
 INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (159, 'P057', 2, 200.00);
 INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (159, 'P089', 2, 70.00);
@@ -10889,6 +10888,3 @@ INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) V
 INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (4182, 'P063', 3, 200.00);
 INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (4982, 'P011', 8, 60.00);
 INSERT INTO orderdetail (orderNumber, productCode, quantityOrdered, priceEach) VALUES (5438, 'P011', 6, 60.00);
-
-/*!40000 ALTER TABLE `orderDetail` ENABLE KEYS */;
-UNLOCK TABLES;

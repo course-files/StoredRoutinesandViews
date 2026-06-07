@@ -1,3 +1,5 @@
+USE `siwaka_dishes`;
+
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
 

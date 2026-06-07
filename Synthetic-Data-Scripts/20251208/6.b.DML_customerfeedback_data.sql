@@ -1,6 +1,7 @@
+USE `siwaka_dishes`;
+
 LOCK TABLES `customerfeedback` WRITE;
 /*!40000 ALTER TABLE `customerfeedback` DISABLE KEYS */;
-TRUNCATE TABLE customerfeedback;
 
 INSERT INTO siwaka_dishes.customerfeedback (foodquality, servicequality, pricetovalue, ambiance, orderNumber, comment) VALUES (5, 5, 4, 4, 159, 'Loved the seasonal menu options.');
 INSERT INTO siwaka_dishes.customerfeedback (foodquality, servicequality, pricetovalue, ambiance, orderNumber, comment) VALUES (3, 2, 2, 2, 171, 'Food was delicious.');
