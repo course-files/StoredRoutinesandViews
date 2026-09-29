@@ -21,6 +21,9 @@ Key changes from the MySQL version:
   - Bug fix: the original top-up block wrote amount_paid instead of
     additional_payment, and the final accumulator line had no effect.
     Both are corrected here.
+  - Time zones: payment_date is TIMESTAMPTZ. order_date is read back from
+    the database as a timezone-aware datetime, so end_date must also be
+    aware; Python raises TypeError when subtracting naive from aware.
 
 Usage:
     pip install psycopg2-binary python-dotenv
@@ -32,6 +35,7 @@ import random
 import decimal
 import psycopg2
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
 # ---------------------------------------------------------------------------
@@ -73,7 +77,8 @@ def random_date(start: datetime, end: datetime) -> datetime:
     random_seconds = random.randint(0, int(delta.total_seconds()))
     return start + timedelta(seconds=random_seconds)
 
-end_date = datetime(2026, 4, 30)
+LOCAL_TZ = ZoneInfo("Africa/Nairobi")
+end_date = datetime(2026, 4, 30, 23, 59, 59, tzinfo=LOCAL_TZ)
 
 INSERT_SQL = (
     "INSERT INTO payment "
@@ -108,6 +113,10 @@ for order_number, order_date in customer_orders:
     # Ensure order_date is a datetime (psycopg2 may return date or datetime)
     if not isinstance(order_date, datetime):
         order_date = datetime.combine(order_date, datetime.min.time())
+    # Ensure it is timezone-aware, then express it in Nairobi local time
+    if order_date.tzinfo is None:
+        order_date = order_date.replace(tzinfo=LOCAL_TZ)
+    order_date = order_date.astimezone(LOCAL_TZ)
 
     with open('5_b_DML_payment_data.sql', 'a', encoding='utf-8') as f:
 

@@ -17,6 +17,9 @@ Key changes from the MySQL version:
      but lowercase unquoted names are fine here)
   - NULL handling: Python None → bare NULL in the SQL string
   - Datetime formatting: PostgreSQL accepts ISO 8601 strings as-is
+  - Time zones: all datetimes are timezone-aware (Africa/Nairobi, UTC+03:00),
+    so psycopg2 writes literals such as
+    '2022-01-31T12:20:16+03:00'::timestamptz into the TIMESTAMPTZ columns.
 
 Usage:
     pip install psycopg2-binary python-dotenv
@@ -27,6 +30,7 @@ import os
 import random
 import psycopg2
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from dotenv import load_dotenv
 
 # ---------------------------------------------------------------------------
@@ -50,6 +54,9 @@ conn = psycopg2.connect(
     dbname=os.getenv('DB_NAME')
 )
 cursor = conn.cursor()
+
+# All Siwaka Dishes branches are in Kenya, so a single zone suffices.
+LOCAL_TZ = ZoneInfo("Africa/Nairobi")
 
 # ---------------------------------------------------------------------------
 # Helper
@@ -76,8 +83,8 @@ branch_codes = [row[0] for row in cursor.fetchall()]
 # ---------------------------------------------------------------------------
 # Generate orders and write to SQL file
 # ---------------------------------------------------------------------------
-start_date = datetime(2022, 1, 1)
-end_date   = datetime(2026, 4, 30)
+start_date = datetime(2022, 1, 1, tzinfo=LOCAL_TZ)
+end_date   = datetime(2026, 9, 28, 23, 59, 59, tzinfo=LOCAL_TZ)
 
 INSERT_SQL = (
     "INSERT INTO customer_order "
